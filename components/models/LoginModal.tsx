@@ -2,6 +2,8 @@ import useLoginModal from "@/hooks/useLoginModal";
 import useRegisterModal from "@/hooks/useRegisterModal";
 import { useCallback, useState } from "react";
 
+import { signIn } from "next-auth/react";
+
 //components
 import Input from "../input";
 import Model from "../Model";
@@ -23,17 +25,22 @@ const LoginModal = () => {
     registerModal.onOpen();
   }, [isLoading, loginModal, registerModal]);
 
-  const onSubmit = useCallback(() => {
+  const onSubmit = useCallback(async () => {
     try {
       setIsLoading(true);
-      //   TODO ADD LOG IN
+
+      await signIn("credentials", {
+        email,
+        password,
+      });
+
       loginModal.onClose();
     } catch (error) {
       console.log(error);
     } finally {
       setIsLoading(false);
     }
-  }, [loginModal]);
+  }, [email, loginModal, password]);
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
@@ -45,6 +52,7 @@ const LoginModal = () => {
       />
       <Input
         placeholder="Password"
+        type="password"
         onChange={(e) => setPassword(e.target.value)}
         value={password}
         disabled={isLoading}
@@ -55,7 +63,10 @@ const LoginModal = () => {
     <div className="mt-4 text-center text-neutral-400">
       <p>
         First time using Twitter?
-        <span onClick={onToggle} className="text-white cursor hover:underline hover:cursor-pointer">
+        <span
+          onClick={onToggle}
+          className="text-white cursor hover:underline hover:cursor-pointer"
+        >
           {" "}
           Create an account
         </span>

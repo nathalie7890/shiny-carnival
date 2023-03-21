@@ -17,12 +17,13 @@ const Button: React.FC<ButtonProps> = ({
   disabled,
   outline,
 }) => {
+ 
   return (
     <button
       disabled={disabled}
       onClick={onClick}
       className={`
-        disabled:opacity-70 disabled: cursor-not-allowed rounded-full font-semibold hover:opacity-80 transition border-2
+        disabled:opacity-70 disabled:cursor-not-allowed rounded-full font-semibold hover:opacity-80 transition border-2
         ${fullWidth ? "w-full" : "w-fit"}
         ${secondary ? "bg-white" : "bg-sky-500"}
         ${secondary ? "text-black" : "text-white"}
@@ -34,7 +35,9 @@ const Button: React.FC<ButtonProps> = ({
         ${outline ? "border-white" : ""}
         ${outline ? "text-white" : ""}
         `}
-    >{label}</button>
+    >
+      {label}
+    </button>
   );
 };
 
